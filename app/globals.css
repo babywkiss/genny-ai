@@ -2,26 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer components {
+  .input {
+    @apply px-3 py-2 rounded-lg text-black outline outline-1 outline-slate-500 focus:outline-2 transition-all hover:bg-slate-100 focus:bg-white;
   }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  .button {
+    @apply flex justify-center items-center gap-1.5 bg-teal-600 rounded-lg w-fit px-5 py-3 text-white hover:enabled:bg-gradient-to-t hover:from-black/15 hover:to-black/15 active:enabled:scale-95 transition-all disabled:cursor-not-allowed;
+  }
+  .spinner {
+    @apply h-20 rounded-full border-8 border-teal-700 animate-spin aspect-square border-t-slate-300;
+  }
 }
