@@ -13,6 +13,8 @@ function PromptForm(props: {
 }) {
 	const [result, action, pending] = useActionState(generateNames, props.result);
 
+	const [quantity, setQuantity] = useState(10);
+
 	useEffect(() => {
 		if (result) props?.setResult?.(result);
 	}, [result]);
@@ -32,10 +34,60 @@ function PromptForm(props: {
 					<textarea
 						minLength={10}
 						name="prompt"
+						required
 						rows={5}
 						placeholder="Опишите идею для вашего веб сайта"
 						className="w-full resize-none input"
 					/>
+					<div className="flex flex-col gap-3 py-3 w-full">
+						<span>Предпочитаемая длина имен:</span>
+						<div className="flex gap-3 justify-between items-center w-full">
+							<span>от</span>
+							<input
+								name="minLength"
+								min={3}
+								required
+								defaultValue={3}
+								type="number"
+								className="w-full input"
+							/>
+							<span>до</span>
+							<input
+								name="maxLength"
+								max={15}
+								required
+								defaultValue={15}
+								type="number"
+								className="w-full input"
+							/>
+						</div>
+						<span>
+							Количество имен:
+							<span className="font-bold"> {quantity}</span>
+						</span>
+						<div className="w-full">
+							<input
+								onChange={(e) => {
+									setQuantity(Number(e.target.value));
+								}}
+								value={quantity}
+								required
+								min={3}
+								max={15}
+								name="quantity"
+								className="range"
+								type="range"
+							/>
+							<div className="flex justify-between">
+								<span className="py-0.5 px-2 text-sm text-white bg-teal-800 rounded-lg">
+									3
+								</span>
+								<span className="py-0.5 px-2 text-sm text-white bg-teal-800 rounded-lg">
+									15
+								</span>
+							</div>
+						</div>
+					</div>
 					<button type="submit" className="w-full font-bold button">
 						Сгенерировать
 						<IconSparkles />

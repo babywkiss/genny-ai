@@ -23,11 +23,19 @@ export default async function generateNames(
 	formData: FormData,
 ): Promise<GenerateNamesResult> {
 	const prompt = formData.get("prompt")?.toString() ?? "";
+	const minLength = Number(formData.get("minLength"));
+	const maxLength = Number(formData.get("maxLength"));
+	const quantity = Number(formData.get("quantity"));
+	console.log(formData);
 
 	let names = prevState?.names ?? null;
 	let err = false;
 	try {
-		names = await ollamaGenerateNames(prompt);
+		names = await ollamaGenerateNames(prompt, {
+			minLength,
+			maxLength,
+			quantity,
+		});
 	} catch {
 		err = true;
 	}

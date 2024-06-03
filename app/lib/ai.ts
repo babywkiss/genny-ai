@@ -6,7 +6,10 @@ import {
 } from "modelfusion";
 import { z } from "zod";
 
-export const ollamaGenerateNames = async (prompt: string) => {
+export const ollamaGenerateNames = async (
+	prompt: string,
+	opts: { minLength: number; maxLength: number; quantity: number },
+) => {
 	const { names } = await generateObject({
 		model: ollama
 			.ChatTextGenerator({
@@ -22,7 +25,7 @@ export const ollamaGenerateNames = async (prompt: string) => {
 				),
 			}),
 		),
-		prompt: `List 10 brand names for a website with following description: "${prompt}"`,
+		prompt: `List ${opts.quantity} brand names for a website with following description: "${prompt}". Each name should be of length from ${opts.minLength} to ${opts.maxLength}`,
 	});
 
 	return names
