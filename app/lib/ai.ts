@@ -6,6 +6,12 @@ import {
 } from "modelfusion";
 import { z } from "zod";
 
+const formatDomain = (str: string) =>
+	str
+		.split(".")[0]
+		.replace(/[^a-zа-я0-9]/gi, "")
+		.toLowerCase();
+
 export const ollamaGenerateNames = async (
 	prompt: string,
 	opts: { minLength: number; maxLength: number; quantity: number },
@@ -20,15 +26,17 @@ export const ollamaGenerateNames = async (
 			z.object({
 				names: z.array(
 					z.object({
-						name: z.string(),
+						ru: z.string(),
+						en: z.string(),
 					}),
 				),
 			}),
 		),
-		prompt: `List ${opts.quantity} brand names for a website with following description: "${prompt}". Each name should be of length from ${opts.minLength} to ${opts.maxLength}`,
+		prompt: `List ${opts.quantity} brand names for a website with following description: "${prompt}". Each name should be of length from ${opts.minLength} to ${opts.maxLength}. Write english and russian variant for each name.`,
 	});
 
-	return names
-		.map(({ name }) => name.toLowerCase().replace(/[^a-zа-я0-9]/gi, ""))
-		.filter(Boolean);
+	return names.map(({ ru, en }) => ({
+		ru: formatDomain(ru),
+		en: formatDomain(en),
+	}));
 };

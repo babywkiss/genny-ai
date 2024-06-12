@@ -179,7 +179,7 @@ export default function Page() {
 					<ReloadForm result={result} setResult={setResult} />
 					<ul className="flex flex-col flex-wrap flex-1 gap-3">
 						{result.names.map((name) => (
-							<li key={name}>
+							<li key={`${name.ru}${name.en}`}>
 								<NameCard name={name} possibleZones={zones} />
 							</li>
 						))}

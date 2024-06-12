@@ -43,7 +43,12 @@ function DomainInfo(props: { domain: string }) {
 		);
 }
 
-function ZonesInfo(props: { name: string; possibleZones: string[] }) {
+const isCyrillicString = (str: string) => /[а-яА-ЯёЁ]/.test(str);
+
+function ZonesInfo(props: {
+	name: { ru: string; en: string };
+	possibleZones: string[];
+}) {
 	return (
 		<div className="p-3">
 			<ul className="overflow-auto max-h-96">
@@ -53,7 +58,7 @@ function ZonesInfo(props: { name: string; possibleZones: string[] }) {
 						key={zone}
 					>
 						<span className="text-lg">
-							{props.name}
+							{isCyrillicString(zone) ? props.name.ru : props.name.en}
 							<span className="font-bold">{zone}</span>
 						</span>
 						<DomainInfo domain={`${props.name}${zone}`} />
@@ -65,7 +70,10 @@ function ZonesInfo(props: { name: string; possibleZones: string[] }) {
 }
 
 export default function NameCard(props: {
-	name: string;
+	name: {
+		en: string;
+		ru: string;
+	};
 	possibleZones: string[];
 }) {
 	const [showZoneInfo, setShowZoneInfo] = useState(false);
@@ -75,7 +83,20 @@ export default function NameCard(props: {
 				className="flex text-black bg-white button group"
 				onClick={() => setShowZoneInfo((prev) => !prev)}
 			>
-				<span className="text-2xl font-bold">{props.name}</span>
+				<div className="flex flex-col gap-3">
+					<div className="flex gap-3 items-center">
+						<span className="py-0.5 px-1.5 text-teal-900 rounded-lg bg-teal-600/30">
+							EN
+						</span>
+						<span className="text-2xl font-bold">{props.name.en}</span>
+					</div>
+					<div className="flex gap-3 items-center">
+						<span className="py-0.5 px-1.5 text-teal-900 rounded-lg bg-teal-600/30">
+							RU
+						</span>
+						<span className="text-2xl font-bold">{props.name.ru}</span>
+					</div>
+				</div>
 				{showZoneInfo ? (
 					<IconChevronUp className="text-teal-600" size={40} />
 				) : (
